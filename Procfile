@@ -1,1 +1,1 @@
-web: gunicorn porterproject.porterproject.wsgi 
+web: gunicorn porterproject.wsgi 
