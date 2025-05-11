@@ -35,7 +35,7 @@ DATABASES = {
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,*.herokuapp.com').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.gitpod.io',
