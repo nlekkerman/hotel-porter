@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Assign Guest to Room {{ room.room_number }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Assign Guest to Room {{ room.room_number }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save Guest</button>
+        <a href="{% url 'room:room_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

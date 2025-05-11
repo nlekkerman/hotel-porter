@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Scan QR Code{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-4">
+    <h2>Enter 4-digit PIN to Access Room Service</h2>
+    {% if error %}
+        <div class="alert alert-danger mt-2">{{ error }}</div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="pin" maxlength="4" class="form-control w-25 mx-auto mt-3" placeholder="Enter PIN" required>
+        <button type="submit" class="btn btn-success mt-3">Submit</button>
+    </form>
+</div>
+{% endblock %}

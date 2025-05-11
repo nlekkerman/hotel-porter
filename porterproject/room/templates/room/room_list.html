@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Room List{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-center mb-4">Hotel Room Dashboard</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for room in rooms %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Room {{ room.room_number }}</h5>
+                    <p class="card-text">
+                        <strong>Occupied:</strong> 
+                        {% if room.is_occupied %}
+                            <span class="badge bg-danger">Yes</span>
+                        {% else %}
+                            <span class="badge bg-success">No</span>
+                        {% endif %}
+                        <br>
+                        <strong>Guest PIN:</strong> {{ room.guest_id_pin|default:"—" }}
+                        <br>
+                        <strong>Guests:</strong>
+                        {% if room.guests.exists %}
+                            <ul class="mb-0">
+                                {% for guest in room.guests.all %}
+                                    <li>{{ room.guest.first_name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span class="text-muted">None</span>
+                        {% endif %}
+                    </p>
+                </div>
+                {% if room.qr_code %}
+                <div class="card-footer text-center bg-white border-0">
+                    <p class="mb-1">QR Code for Room service.</p>
+                    <a href="{{ room.qr_code }}" target="_blank">
+                        <img src="{{ room.qr_code }}" alt="QR Code" width="80">
+                    </a>
+                </div>
+                {% endif %}
+                <a href="{% url 'room:add_guest' room.id %}" class="btn btn-outline-primary btn-sm mt-3">Assign Guest</a>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

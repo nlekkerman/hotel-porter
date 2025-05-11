@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Reception Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Receptionist Dashboard</h1>
+
+    <div class="row justify-content-center">
+        <!-- Room Card -->
+        <div class="col-md-4">
+            <a href="{% url 'room:room_list' %}" class="text-decoration-none">
+                <div class="card text-center shadow-lg border-0">
+                    <div class="card-body">
+                        <i class="bi bi-door-open-fill display-1 text-primary mb-3"></i>
+                        <h4 class="card-title">Rooms</h4>
+                        <p class="card-text text-muted">View and manage all hotel rooms</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Add more dashboard items here -->
+    </div>
+</div>
+{% endblock %}

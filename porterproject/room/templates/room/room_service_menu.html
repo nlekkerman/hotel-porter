@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Room Service - Room {{ room_number }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Room Service Menu</h1>
+        <p class="lead text-muted">Room {{ room_number }}</p>
+    </div>
+
+    <div class="mb-5">
+        <h3 class="mb-3">Menu</h3>
+        {% if menu_items %}
+            {% for category, items in menu_items.items %}
+                <div class="category-section mb-4">
+                    <h4 class="fw-bold">{{ category }}</h4>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        {% for item in items %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ item.name }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.name }}</h5>
+                                    <p class="card-text">{{ item.description }}</p>
+                                    <p class="card-text fw-semibold">Price: €{{ item.price }}</p>
+                                </div>
+                                <div class="add-item-button-container d-flex justify-content-center mb-3">
+                                    <form class="add-to-order-form" data-room="{{ room_number }}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" class="btn btn-primary btn-sm mt-2">Add to Order</button>
+                                    </form>
+                            </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">No menu items available.</p>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="itemAddedModal" tabindex="-1" aria-labelledby="itemAddedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+              ✅ Item added to your order!
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const forms = document.querySelectorAll(".add-to-order-form");
+    
+        forms.forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+    
+                const roomNumber = form.dataset.room;
+                const formData = new FormData(form);
+                const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+                const itemId = formData.get("item_id");
+    
+                // Traverse DOM up to the card, then find item name and price
+                const card = form.closest(".card");
+                const itemNameElement = card.querySelector(".card-title");
+                const itemPriceElement = card.querySelector(".card-text.fw-semibold");
+    
+                if (itemNameElement && itemPriceElement) {
+                    const itemName = itemNameElement.textContent.trim();
+                    const itemPrice = itemPriceElement.textContent.trim();
+    
+                    console.log(`🛒 Adding to Room ${roomNumber}: ${itemName} (ID: ${itemId}, Price: ${itemPrice})`);
+                } else {
+                    console.warn("Item name or price not found.");
+                }
+    
+                fetch(`/${roomNumber}/add-to-order/`, {
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network error");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        showModal(data.item_name, data.quantity, data.added_at);
+                    }
+                })
+                .catch(error => {
+                    alert("There was an error adding the item to your order.");
+                    console.error(error);
+                });
+            });
+        });
+    
+        function showModal(itemName = "", quantity = "", addedAt = "") {
+            const modal = document.getElementById("itemAddedModal");
+            const modalBody = modal.querySelector(".modal-body");
+            modalBody.textContent = `✅ Added ${itemName} (x${quantity}) to your order at ${addedAt}`;
+            new bootstrap.Modal(modal).show();
+        }
+    });
+    </script>
+    
+
+{% endblock %}

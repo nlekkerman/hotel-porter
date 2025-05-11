@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}In-Room Breakfast - Room {{ room.room_number }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center">In-Room Breakfast Menu</h1>
+    <p class="text-center text-muted">Breakfast options available for Room {{ room.room_number }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            {% for item in breakfast_items %}
+            <div class="col-md-6 mb-4">
+                <div class="card p-3 h-100">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="items" value="{{ item.id }}" id="item{{ item.id }}">
+                        <label class="form-check-label" for="item{{ item.id }}">Select</label>
+                    </div>
+                    <div class="mt-2">
+                        <label for="quantity{{ item.id }}">Quantity:</label>
+                        <input type="number" name="quantity_{{ item.id }}" id="quantity{{ item.id }}" min="1" max="10" class="form-control" value="1">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Place Breakfast Order</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Room Order - Room {{ room_number }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Room Order</h1>
+        <p class="lead text-muted">Room {{ room_number }}</p>
+    </div>
+
+    {% if order_items %}
+        <div class="mb-5">
+            <h3 class="mb-3">Your Order</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_item in order_items %}
+                        <tr>
+                            <td>{{ order_item.item.name }}</td>
+                            <td>{{ order_item.quantity }}</td>
+                            <td>€{{ order_item.item.price }}</td>
+                            <td>€{{ order_item.item_total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Order Totals Breakdown -->
+            <div class="mt-4 text-end">
+                <p><strong>Subtotal:</strong> €{{ subtotal }}</p>
+                <p><strong>Room Service Charge:</strong> €{{ service_charge }}</p>
+                <h4><strong>Total:</strong> €{{ total_price }}</h4>
+            </div>
+
+            <!-- Confirm Order Button -->
+            <div class="mt-4 text-center">
+                <a href="#" class="btn btn-success">Confirm Order</a>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center">No items in your order yet. Add items to your order from the menu!</p>
+    {% endif %}
+</div>
+{% endblock %}
