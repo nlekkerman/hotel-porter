@@ -16,6 +16,17 @@ import dj_database_url
 from decouple import config
 from datetime import timedelta
 
+# Load environment variables from .env file (ensure .env exists and is configured)
+DATABASE_URL = config('DATABASE_URL')
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=True, cast=bool)
+HEROKU_HOST = config('HEROKU_HOST', default='hotel-porter-d25ad83b12cf.herokuapp.com')
+
+# Print out the key configuration variables for debugging
+print("SECRET_KEY:", SECRET_KEY)
+print("DEBUG:", DEBUG)
+print("HEROKU_HOST:", HEROKU_HOST)
+print("DATABASE_URL:", DATABASE_URL)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -86,8 +97,11 @@ WSGI_APPLICATION = 'porterproject.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL'))
+    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 }
+
+# Enforce SSL connection for Supabase
+DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
 
 # Password validation
