@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from guest.models import Guest
 from django.views.decorators.csrf import csrf_exempt
 from .forms import GuestForm
+from django.core.paginator import Paginator
 
  
 def add_guest(request, room_id):
@@ -22,8 +23,14 @@ def add_guest(request, room_id):
     return render(request, 'room/add_guest.html', {'form': form, 'room': room})
 
 def room_list(request):
-    rooms = Room.objects.all()
-    return render(request, 'room/room_list.html', {'rooms': rooms})
+    rooms = Room.objects.all()  # Get all rooms
+    paginator = Paginator(rooms, 10)  # Show 10 rooms per page
+    
+    page_number = request.GET.get('page')  # Get the page number from the query string
+    page_obj = paginator.get_page(page_number)  # Get the page object
+    
+    return render(request, 'room/room_list.html', {'page_obj': page_obj})
+
 
 @csrf_exempt
 def add_to_order(request, room_number):

@@ -5,8 +5,10 @@
 {% block content %}
 <div class="container py-4">
     <h2 class="text-center mb-4">Hotel Room Dashboard</h2>
+    
+    <!-- Rooms List -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        {% for room in rooms %}
+        {% for room in page_obj %}
         <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
@@ -56,5 +58,35 @@
         </div>
         {% endfor %}
     </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination mt-4">
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">Previous</a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">Last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
 </div>
 {% endblock %}
