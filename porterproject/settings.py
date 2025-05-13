@@ -13,32 +13,22 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-from decouple import config, Csv
+from decouple import config
 from datetime import timedelta
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-if os.path.exists('env.py'):
-    import env
-
-# Define environment variables using python-decouple
+# Load environment variables from .env file (ensure .env exists and is configured)
 SECRET_KEY = config('SECRET_KEY')
-DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL')),
-    
-}
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Security settings for Django (don't run with DEBUG turned on in production)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'hotel-porter-d25ad83b12cf.herokuapp.com',
+    config('HEROKU_HOST', default='hotel-porter-d25ad83b12cf.herokuapp.com')
 ]
 
 
@@ -89,7 +79,6 @@ TEMPLATES = [
         },
     },
 ]
-print("TEMPLATE DIR:", BASE_DIR / 'porterproject' / 'templates')
 WSGI_APPLICATION = 'porterproject.wsgi.application'
 
 
