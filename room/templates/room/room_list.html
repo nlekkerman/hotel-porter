@@ -33,11 +33,20 @@
                         {% endif %}
                     </p>
                 </div>
-                {% if room.qr_code %}
+                {% if room.room_service_qr_code %}
                 <div class="card-footer text-center bg-white border-0">
                     <p class="mb-1">QR Code for Room service.</p>
-                    <a href="{{ room.qr_code }}" target="_blank">
-                        <img src="{{ room.qr_code }}" alt="QR Code" width="80">
+                    <a href="{{ room.room_service_qr_code }}" target="_blank">
+                        <img src="{{ room.room_service_qr_code }}" alt="QR Code" width="80">
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if room.in_room_breakfast_qr_code %}
+                <div class="card-footer text-center bg-white border-0">
+                    <p class="mb-1">QR Code for Breakfast in Room service.</p>
+                    <a href="{{ room.in_room_breakfast_qr_code }}" target="_blank">
+                        <img src="{{ room.in_room_breakfast_qr_code }}" alt="QR Code" width="80">
                     </a>
                 </div>
                 {% endif %}
