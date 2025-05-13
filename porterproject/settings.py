@@ -33,7 +33,7 @@ DATABASES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,*hotel-porter-d25ad83b12cf.herokuapp.com').split(',')
 
