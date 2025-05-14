@@ -20,9 +20,9 @@ class Room(models.Model):
 
     def generate_qr_code(self, qr_type="room_service"):
         path_map = {
-            "room_service": f"http://127.0.0.1:8000/room/{self.room_number}/menu/",
-            "kids_entertainment": f"http://127.0.0.1:8000/room/{self.room_number}/kids/",
-            "in_room_breakfast": f"http://127.0.0.1:8000/room/{self.room_number}/breakfast/",
+            "room_service": f"https://hotel-porter-d25ad83b12cf.herokuapp.com/room/{self.room_number}/menu/",
+            "kids_entertainment": f"https://hotel-porter-d25ad83b12cf.herokuapp.com/room/{self.room_number}/kids/",
+            "in_room_breakfast": f"https://hotel-porter-d25ad83b12cf.herokuapp.com/room/{self.room_number}/breakfast/",
         }
 
         qr_field_map = {

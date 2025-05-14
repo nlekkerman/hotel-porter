@@ -9,4 +9,4 @@ urlpatterns = [
     path('<int:room_number>/order/', views.view_order, name='view_order'),
     path('room/<int:room_number>/menu/', views.room_service_menu, name='room_service_menu'),
     path('room/<int:room_number>/kids/', views.kids_entertainment_view, name='kids_entertainment'),
- path('room/<int:room_number>/breakfast/', views.breakfast_menu, name='breakfast_menu'),]
+    path('room/<int:room_number>/breakfast/', views.breakfast_menu, name='breakfast_menu'),]
