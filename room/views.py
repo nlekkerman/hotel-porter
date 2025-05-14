@@ -23,7 +23,7 @@ def add_guest(request, room_id):
     return render(request, 'room/add_guest.html', {'form': form, 'room': room})
 
 def room_list(request):
-    rooms = Room.objects.all()  # Get all rooms
+    rooms = Room.objects.all().order_by('room_number')  # Get all rooms
     paginator = Paginator(rooms, 10)  # Show 10 rooms per page
     
     page_number = request.GET.get('page')  # Get the page number from the query string
