@@ -131,6 +131,7 @@ def breakfast_menu(request, room_number):
     if request.method == 'POST':
         pin = request.POST.get('pin')
 
+
         if pin == room.guest_id_pin:
             return render(request, 'room/in_room_breakfast.html', {
                 'room': room,
